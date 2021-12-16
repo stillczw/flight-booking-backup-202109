@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.czw.flight.mapper.RouteMapper">
+  <resultMap id="BaseResultMap" type="org.czw.flight.model.Route">
+    <id column="route_id" jdbcType="INTEGER" property="routeId" />
+    <result column="airline_id" jdbcType="INTEGER" property="airlineId" />
+    <result column="departure_airport" jdbcType="VARCHAR" property="departureAirport" />
+    <result column="landing_airport" jdbcType="VARCHAR" property="landingAirport" />
+    <result column="mileage" jdbcType="INTEGER" property="mileage" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    route_id, airline_id, departure_airport, landing_airport, mileage, add_time, update_time,
+    is_deleted
+  </sql>
+  <select id="selectByExample" parameterType="org.czw.flight.model.RouteExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from route
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from route
+    where route_id = #{routeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from route
+    where route_id = #{routeId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="org.czw.flight.model.RouteExample">
+    delete from route
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="org.czw.flight.model.Route">
+    insert into route (route_id, airline_id, departure_airport,
+      landing_airport, mileage, add_time,
+      update_time, is_deleted)
+    values (#{routeId,jdbcType=INTEGER}, #{airlineId,jdbcType=INTEGER}, #{departureAirport,jdbcType=VARCHAR},
+      #{landingAirport,jdbcType=VARCHAR}, #{mileage,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP},
+      #{updateTime,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="org.czw.flight.model.Route">
+    insert into route
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="routeId != null">
+        route_id,
+      </if>
+      <if test="airlineId != null">
+        airline_id,
+      </if>
+      <if test="departureAirport != null">
+        departure_airport,
+      </if>
+      <if test="landingAirport != null">
+        landing_airport,
+      </if>
+      <if test="mileage != null">
+        mileage,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="isDeleted != null">
+        is_deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="routeId != null">
+        #{routeId,jdbcType=INTEGER},
+      </if>
+      <if test="airlineId != null">
+        #{airlineId,jdbcType=INTEGER},
+      </if>
+      <if test="departureAirport != null">
+        #{departureAirport,jdbcType=VARCHAR},
+      </if>
+      <if test="landingAirport != null">
+        #{landingAirport,jdbcType=VARCHAR},
+      </if>
+      <if test="mileage != null">
+        #{mileage,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="org.czw.flight.model.RouteExample" resultType="java.lang.Long">
+    select count(*) from route
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update route
+    <set>
+      <if test="record.routeId != null">
+        route_id = #{record.routeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.airlineId != null">
+        airline_id = #{record.airlineId,jdbcType=INTEGER},
+      </if>
+      <if test="record.departureAirport != null">
+        departure_airport = #{record.departureAirport,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landingAirport != null">
+        landing_airport = #{record.landingAirport,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mileage != null">
+        mileage = #{record.mileage,jdbcType=INTEGER},
+      </if>
+      <if test="record.addTime != null">
+        add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDeleted != null">
+        is_deleted = #{record.isDeleted,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update route
+    set route_id = #{record.routeId,jdbcType=INTEGER},
+      airline_id = #{record.airlineId,jdbcType=INTEGER},
+      departure_airport = #{record.departureAirport,jdbcType=VARCHAR},
+      landing_airport = #{record.landingAirport,jdbcType=VARCHAR},
+      mileage = #{record.mileage,jdbcType=INTEGER},
+      add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      is_deleted = #{record.isDeleted,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="org.czw.flight.model.Route">
+    update route
+    <set>
+      <if test="airlineId != null">
+        airline_id = #{airlineId,jdbcType=INTEGER},
+      </if>
+      <if test="departureAirport != null">
+        departure_airport = #{departureAirport,jdbcType=VARCHAR},
+      </if>
+      <if test="landingAirport != null">
+        landing_airport = #{landingAirport,jdbcType=VARCHAR},
+      </if>
+      <if test="mileage != null">
+        mileage = #{mileage,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        is_deleted = #{isDeleted,jdbcType=BIT},
+      </if>
+    </set>
+    where route_id = #{routeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.czw.flight.model.Route">
+    update route
+    set airline_id = #{airlineId,jdbcType=INTEGER},
+      departure_airport = #{departureAirport,jdbcType=VARCHAR},
+      landing_airport = #{landingAirport,jdbcType=VARCHAR},
+      mileage = #{mileage,jdbcType=INTEGER},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=BIT}
+    where route_id = #{routeId,jdbcType=INTEGER}
+  </update>
+</mapper>

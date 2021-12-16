@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.czw.flight.mapper.TicketMapper">
+  <resultMap id="BaseResultMap" type="org.czw.flight.model.Ticket">
+    <id column="booking_reference" jdbcType="VARCHAR" property="bookingReference" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="flight_number" jdbcType="VARCHAR" property="flightNumber" />
+    <result column="passenger_name" jdbcType="VARCHAR" property="passengerName" />
+    <result column="class_level" jdbcType="VARCHAR" property="classLevel" />
+    <result column="price" jdbcType="DOUBLE" property="price" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    booking_reference, user_id, flight_number, passenger_name, class_level, price, add_time,
+    update_time, is_deleted
+  </sql>
+  <select id="selectByExample" parameterType="org.czw.flight.model.TicketExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ticket
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ticket
+    where booking_reference = #{bookingReference,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ticket
+    where booking_reference = #{bookingReference,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="org.czw.flight.model.TicketExample">
+    delete from ticket
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="org.czw.flight.model.Ticket">
+    insert into ticket (booking_reference, user_id, flight_number,
+      passenger_name, class_level, price,
+      add_time, update_time, is_deleted
+      )
+    values (#{bookingReference,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{flightNumber,jdbcType=VARCHAR},
+      #{passengerName,jdbcType=VARCHAR}, #{classLevel,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE},
+      #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.czw.flight.model.Ticket">
+    insert into ticket
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bookingReference != null">
+        booking_reference,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="flightNumber != null">
+        flight_number,
+      </if>
+      <if test="passengerName != null">
+        passenger_name,
+      </if>
+      <if test="classLevel != null">
+        class_level,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="isDeleted != null">
+        is_deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bookingReference != null">
+        #{bookingReference,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="flightNumber != null">
+        #{flightNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="passengerName != null">
+        #{passengerName,jdbcType=VARCHAR},
+      </if>
+      <if test="classLevel != null">
+        #{classLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="org.czw.flight.model.TicketExample" resultType="java.lang.Long">
+    select count(*) from ticket
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update ticket
+    <set>
+      <if test="record.bookingReference != null">
+        booking_reference = #{record.bookingReference,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.flightNumber != null">
+        flight_number = #{record.flightNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.passengerName != null">
+        passenger_name = #{record.passengerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.classLevel != null">
+        class_level = #{record.classLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=DOUBLE},
+      </if>
+      <if test="record.addTime != null">
+        add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDeleted != null">
+        is_deleted = #{record.isDeleted,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update ticket
+    set booking_reference = #{record.bookingReference,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      flight_number = #{record.flightNumber,jdbcType=VARCHAR},
+      passenger_name = #{record.passengerName,jdbcType=VARCHAR},
+      class_level = #{record.classLevel,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DOUBLE},
+      add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      is_deleted = #{record.isDeleted,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="org.czw.flight.model.Ticket">
+    update ticket
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="flightNumber != null">
+        flight_number = #{flightNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="passengerName != null">
+        passenger_name = #{passengerName,jdbcType=VARCHAR},
+      </if>
+      <if test="classLevel != null">
+        class_level = #{classLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        is_deleted = #{isDeleted,jdbcType=BIT},
+      </if>
+    </set>
+    where booking_reference = #{bookingReference,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.czw.flight.model.Ticket">
+    update ticket
+    set user_id = #{userId,jdbcType=INTEGER},
+      flight_number = #{flightNumber,jdbcType=VARCHAR},
+      passenger_name = #{passengerName,jdbcType=VARCHAR},
+      class_level = #{classLevel,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=BIT}
+    where booking_reference = #{bookingReference,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.czw.flight.mapper.AirplaneMapper">
+  <resultMap id="BaseResultMap" type="org.czw.flight.model.Airplane">
+    <id column="airplane_id" jdbcType="VARCHAR" property="airplaneId" />
+    <result column="airline_id" jdbcType="INTEGER" property="airlineId" />
+    <result column="airplane_type" jdbcType="VARCHAR" property="airplaneType" />
+    <result column="first_class_quota" jdbcType="INTEGER" property="firstClassQuota" />
+    <result column="economy_class_quota" jdbcType="INTEGER" property="economyClassQuota" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    airplane_id, airline_id, airplane_type, first_class_quota, economy_class_quota, add_time,
+    update_time, is_deleted
+  </sql>
+  <select id="selectByExample" parameterType="org.czw.flight.model.AirplaneExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from airplane
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from airplane
+    where airplane_id = #{airplaneId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from airplane
+    where airplane_id = #{airplaneId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="org.czw.flight.model.AirplaneExample">
+    delete from airplane
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="org.czw.flight.model.Airplane">
+    insert into airplane (airplane_id, airline_id, airplane_type,
+      first_class_quota, economy_class_quota, add_time,
+      update_time, is_deleted)
+    values (#{airplaneId,jdbcType=VARCHAR}, #{airlineId,jdbcType=INTEGER}, #{airplaneType,jdbcType=VARCHAR},
+      #{firstClassQuota,jdbcType=INTEGER}, #{economyClassQuota,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP},
+      #{updateTime,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="org.czw.flight.model.Airplane">
+    insert into airplane
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="airplaneId != null">
+        airplane_id,
+      </if>
+      <if test="airlineId != null">
+        airline_id,
+      </if>
+      <if test="airplaneType != null">
+        airplane_type,
+      </if>
+      <if test="firstClassQuota != null">
+        first_class_quota,
+      </if>
+      <if test="economyClassQuota != null">
+        economy_class_quota,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="isDeleted != null">
+        is_deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="airplaneId != null">
+        #{airplaneId,jdbcType=VARCHAR},
+      </if>
+      <if test="airlineId != null">
+        #{airlineId,jdbcType=INTEGER},
+      </if>
+      <if test="airplaneType != null">
+        #{airplaneType,jdbcType=VARCHAR},
+      </if>
+      <if test="firstClassQuota != null">
+        #{firstClassQuota,jdbcType=INTEGER},
+      </if>
+      <if test="economyClassQuota != null">
+        #{economyClassQuota,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="org.czw.flight.model.AirplaneExample" resultType="java.lang.Long">
+    select count(*) from airplane
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update airplane
+    <set>
+      <if test="record.airplaneId != null">
+        airplane_id = #{record.airplaneId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.airlineId != null">
+        airline_id = #{record.airlineId,jdbcType=INTEGER},
+      </if>
+      <if test="record.airplaneType != null">
+        airplane_type = #{record.airplaneType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.firstClassQuota != null">
+        first_class_quota = #{record.firstClassQuota,jdbcType=INTEGER},
+      </if>
+      <if test="record.economyClassQuota != null">
+        economy_class_quota = #{record.economyClassQuota,jdbcType=INTEGER},
+      </if>
+      <if test="record.addTime != null">
+        add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDeleted != null">
+        is_deleted = #{record.isDeleted,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update airplane
+    set airplane_id = #{record.airplaneId,jdbcType=VARCHAR},
+      airline_id = #{record.airlineId,jdbcType=INTEGER},
+      airplane_type = #{record.airplaneType,jdbcType=VARCHAR},
+      first_class_quota = #{record.firstClassQuota,jdbcType=INTEGER},
+      economy_class_quota = #{record.economyClassQuota,jdbcType=INTEGER},
+      add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      is_deleted = #{record.isDeleted,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="org.czw.flight.model.Airplane">
+    update airplane
+    <set>
+      <if test="airlineId != null">
+        airline_id = #{airlineId,jdbcType=INTEGER},
+      </if>
+      <if test="airplaneType != null">
+        airplane_type = #{airplaneType,jdbcType=VARCHAR},
+      </if>
+      <if test="firstClassQuota != null">
+        first_class_quota = #{firstClassQuota,jdbcType=INTEGER},
+      </if>
+      <if test="economyClassQuota != null">
+        economy_class_quota = #{economyClassQuota,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        is_deleted = #{isDeleted,jdbcType=BIT},
+      </if>
+    </set>
+    where airplane_id = #{airplaneId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.czw.flight.model.Airplane">
+    update airplane
+    set airline_id = #{airlineId,jdbcType=INTEGER},
+      airplane_type = #{airplaneType,jdbcType=VARCHAR},
+      first_class_quota = #{firstClassQuota,jdbcType=INTEGER},
+      economy_class_quota = #{economyClassQuota,jdbcType=INTEGER},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=BIT}
+    where airplane_id = #{airplaneId,jdbcType=VARCHAR}
+  </update>
+</mapper>

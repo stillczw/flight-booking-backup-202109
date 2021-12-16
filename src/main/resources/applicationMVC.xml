@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+
+    <!-- 定义文件的上传配置支持 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 设置每次上传文件的最大限制 -->
+        <property name="maxUploadSize" value="5242880"/>
+        <!-- 设置每次上传占用的内存大小 -->
+        <property name="maxInMemorySize" value="4096"/>
+    </bean>
+    <!-- 配置了一个全局的异常的跳转映射，只要出现了指定的错误信息，那么就跳转到指定的页面 -->
+    <bean id="exceptionMapping" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">
+                    errors
+                </prop>
+            </props>
+        </property>
+    </bean>
+    <!-- 通过资源文件验证后台数据 -->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+            <array>
+                <value>Validation</value>
+            </array>
+        </property>
+    </bean>
+    <mvc:view-controller path="/login.html" view-name="login"/>
+    <!--<mvc:view-controller path="/pages/back/admin/AdminController/indexUrl.html" view-name="back/index"/>-->
+    <mvc:view-controller path="/admin/index.html" view-name="back/index"/>
+    <mvc:view-controller path="/pages/back/admin/route/RouteController/addUrl.html"
+                         view-name="back/admin/route/route_add"/>
+    <mvc:view-controller path="/pages/back/admin/route/RouteController/listUrl.html"
+                         view-name="back/admin/route/route_list"/>
+    <mvc:view-controller path="/pages/back/admin/plane/PlaneController/addUrl.html"
+                         view-name="back/admin/plane/plane_add"/>
+    <mvc:view-controller path="/pages/back/admin/plane/PlaneController/listUrl.html"
+                         view-name="back/admin/plane/plane_list"/>
+    <mvc:view-controller path="/pages/back/admin/flights/FlightsController/addUrl.html"
+                         view-name="back/admin/flights/flights_add"/>
+    <mvc:view-controller path="/pages/back/admin/flights/FlightsController/listUrl.html"
+                         view-name="back/admin/flights/flights_list"/>
+    <mvc:view-controller path="/pages/back/admin/company/CompanyController/addUrl.html"
+                         view-name="back/admin/company/company_add"/>
+    <mvc:view-controller path="/pages/back/admin/company/CompanyController/listUrl.html"
+                         view-name="back/admin/company/company_list"/>
+    <mvc:view-controller path="/pages/back/admin/AdminController/addUrl.html"
+                         view-name="back/admin/admin_add"/>
+    <mvc:view-controller path="/pages/back/admin/AdminController/listUrl.html"
+                         view-name="back/admin/admin_list"/>
+    <!--<mvc:view-controller path="/admin/update.html"
+                         view-name="back/admin/admin_update"/>-->
+    <mvc:view-controller path="/pages/back/admin/AdminController/updateUrl.html"
+                         view-name="back/admin/admin_update"/>
+
+    <mvc:view-controller path="/pages/back/admin/log/LogController/listUrl.html"
+                         view-name="back/admin/log/log_list"/>
+    <mvc:view-controller path="/users/updateUrl.html" view-name="front/users/users_update"/>
+    <!--<mvc:view-controller path="/pages/front/users/UsersController/updateUrl.html" view-name="front/users/users_update"/>-->
+    <mvc:view-controller path="/ticket/showUrl.html" view-name="front/ticket/ticket_show"/>
+    <!--<mvc:view-controller path="/pages/front/ticket/TicketController/showUrl.html" view-name="front/ticket/ticket_show"/>-->
+    <mvc:view-controller path="/ticket/listUrl.html" view-name="front/ticket/ticket_list"/>
+    <!--<mvc:view-controller path="/pages/front/ticket/TicketController/listUrl.html" view-name="front/ticket/ticket_list"/>-->
+    <mvc:view-controller path="/index.html" view-name="index"/>
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**/*.html"/>
+            <bean class="org.czw.flight.utils.validation.ValidationInterceptor"/>
+        </mvc:interceptor>
+        <!--<mvc:interceptor>
+            <mvc:mapping path="/ticket/add.html"/>
+            &lt;!&ndash;<mvc:mapping path="/pages/front/**/*.html"/>&ndash;&gt;
+            <bean class="org.czw.flight.utils.interceptor.UsersInterceptor"/>
+        </mvc:interceptor>-->
+        <!--<mvc:interceptor>
+            <mvc:mapping path="/users/*.html" />
+            <bean class="org.czw.flight.utils.interceptor.UsersInterceptor"/>
+        </mvc:interceptor>-->
+        <mvc:interceptor>
+            <!--<mvc:mapping path="/admin/*"/>-->
+            <mvc:mapping path="/pages/back/**/*.html"/>
+            <bean class="org.czw.flight.utils.interceptor.AdminInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+    <!-- 配置静态资源文件访问 -->
+    <mvc:resources mapping="/js/**" location="/WEB-INF/static/js/"/>
+    <mvc:resources mapping="/css/**" location="/WEB-INF/static/css/"/>
+    <mvc:resources mapping="/upload/**" location="/WEB-INF/static/upload/"/>
+    <mvc:resources mapping="/img/**" location="/WEB-INF/static/img/"/>
+    <!-- 表示要进行安全访问的路径资源匹配处理 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!-- 匹配前缀 -->
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <!-- 匹配处理的后缀 -->
+        <property name="suffix" value=".jsp"/>
+    </bean>
+    <context:annotation-config/>
+    <context:component-scan base-package="org.czw.flight.controller"/>
+    <mvc:annotation-driven/>            <!-- 启动Spring MVC的注解配置 -->
+    <mvc:default-servlet-handler/>        <!-- 启用处理请求的servlet -->
+</beans>

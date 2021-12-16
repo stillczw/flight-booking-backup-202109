@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+    PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+    "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!--<classPathEntry location="/Program Files/IBM/SQLLIB/java/db2java.zip" />-->
+
+    <context id="Mybatis3Context" targetRuntime="MyBatis3">
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <!-- suppress all comments generated automatically -->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+        <!-- configure the database connection -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/flight?useLegacyDatetimeCode=false&amp;serverTimezone=UTC&amp;nullCatalogMeansCurrent=true"
+                        userId="root"
+                        password="still1112">
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+        <!-- generate models -->
+        <javaModelGenerator targetPackage="org.czw.flight.model" targetProject="C:/Users/dell/IdeaProjects/flight/src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+        <!-- generate sql mappers -->
+        <sqlMapGenerator targetPackage="mapper" targetProject="C:/Users/dell/IdeaProjects/flight/src/main/resources/org/czw/flight">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <!-- generate mappers -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="org.czw.flight.mapper" targetProject="C:/Users/dell/IdeaProjects/flight/src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <table tableName="admin" domainObjectName="Admin"></table>
+        <table tableName="admin_log" domainObjectName="AdminLog"></table>
+        <table tableName="admin_role" domainObjectName="AdminRole"></table>
+        <table tableName="airline" domainObjectName="Airline"></table>
+        <table tableName="airplane" domainObjectName="Airplane"></table>
+        <table tableName="flight" domainObjectName="Flight"></table>
+        <table tableName="permission" domainObjectName="Permission"></table>
+        <table tableName="role" domainObjectName="Role"></table>
+        <table tableName="role_permission" domainObjectName="RolePermission"></table>
+        <table tableName="route" domainObjectName="Route"></table>
+        <table tableName="ticket" domainObjectName="Ticket"></table>
+        <table tableName="user" domainObjectName="User"></table>
+
+    </context>
+</generatorConfiguration>
